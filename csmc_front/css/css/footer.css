@@ -1,0 +1,9 @@
+footer{
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	height:5px;
+	background-color:rgba(209, 223, 232, 0.62);	
+	z-index:2;
+}

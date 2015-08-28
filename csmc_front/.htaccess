@@ -1,0 +1,15 @@
+#(Optional) use a csmc file identifier in your index file, for love and appreciation
+
+DirectoryIndex index.csmc
+
+AddHandler x-httpd-php .csmc 
+AddHandler php-script .php .csmc
+AddHandler php5-script .php .csmc
+AddType application/x-httpd-php .csmc
+
+# Rewrite rules
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d

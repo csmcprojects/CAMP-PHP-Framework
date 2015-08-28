@@ -1,0 +1,17 @@
+#login_box{
+	max-width: 400px;
+	min-width: 230px;
+	padding: 25px;
+	background-color: aliceblue;
+	text-align: center;
+	margin: 0 auto;
+}
+.login_logo{
+	text-align:center;
+}
+
+#login_box .form_button{
+	border-radius: 0px;
+	width: 150px;
+	height: 40px;
+}

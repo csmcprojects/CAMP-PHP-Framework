@@ -1,0 +1,13 @@
+/* NOTIFICATION BAR */
+.notification{
+	position:relative;
+	background-color:rgba(209, 223, 232, 0.98);
+	color:rgb(0, 129, 255);	
+	font-size:14px;
+	margin-bottom:2px;
+	z-index:5;
+	-webkit-transition: all 1.0s ease-in-out;
+	-moz-transition: all 1.0s ease-in-out;
+	-o-transition: all 1.0s ease-in-out;
+	transition: all 1.0s ease-in-out;
+}

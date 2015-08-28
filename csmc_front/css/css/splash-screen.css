@@ -1,0 +1,12 @@
+/* SPLASH SCREEN */
+.welcome{
+	right:0;
+	bottom:0;
+	position:absolute;
+	width:100%;
+	height:100%;
+	background: white url("../static/loading.gif") no-repeat center;
+	z-index:1995;	
+	overflow-y: hidden;
+	overflow-x: hidden;
+}

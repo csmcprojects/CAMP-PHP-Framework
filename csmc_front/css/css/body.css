@@ -1,0 +1,5 @@
+body{
+	/* IMPORTANT TO PREVENT BODY OVERLAPING MENU PLANE */
+	position: relative; 
+	z-index: -10;
+}

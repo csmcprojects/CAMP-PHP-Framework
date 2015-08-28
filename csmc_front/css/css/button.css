@@ -1,0 +1,12 @@
+button{
+	padding:9px;
+	background-color:#444;
+	color:#FFFFFF;
+	cursor:pointer;
+	border:none;
+	margin-bottom:15px;
+	font-size:15px;
+}
+button:focus {
+	outline:0;
+}

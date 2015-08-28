@@ -1,0 +1,80 @@
+@media only screen and (min-width : 731px){
+	#notifications{
+		position:fixed;
+		bottom:10px;
+		right:0px;
+		width:300px;
+		z-index:3;
+	}
+	.notification{
+		text-align:right;
+		padding:6px;
+		border-left: 3px solid #16a085;
+	}
+	.open{
+		right:10px;
+	}
+	.close{
+		right:-400px;
+	}
+	input{
+		width:300px;
+	}
+	#mouth{
+		z-index: 10;
+		position: fixed;
+		top: 15px;
+		left: 254px;
+	}
+	.question_mark{
+		position: fixed;
+		left: 553px;
+		top: 21px;
+		margin-left: 10px;
+		background-color: #16a085;
+		padding-left: 4px;
+		width: 22px;
+		height: 22px;
+		border-radius: 74px;
+		cursor: pointer;
+	}
+}
+@media only screen and (max-width : 730px){
+	.notification{
+		position:fixed;
+		left:0;
+		right:0;
+		text-align:center;
+		padding: 44px auto;
+		padding-top:15px;
+		height:65px;
+		border-bottom: 3px solid #16a085;
+	}
+	.open{
+		top:0px;
+	}
+	.close{
+		top:-400px;
+	}
+	input{
+		width:100%;
+	}
+	#mouth{
+		position:fixed;
+		bottom:10px;
+		left:10px;
+		right:10px;
+	}
+	.question_mark{
+		position: fixed;
+		bottom: 57px;
+		right: 10px;
+		margin-left: 10px;
+		background-color: #16a085;
+		width: 22px;
+		height: 22px;
+		border-radius: 74px;
+		padding-left: 4px;
+		cursor: pointer;
+	}
+}

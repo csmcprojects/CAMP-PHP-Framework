@@ -1,0 +1,9 @@
+#desktop {
+	position:relative;
+	top:90px;
+	z-index:-3;	
+	width: 90%;
+	margin: 0 auto;
+	padding-bottom:20px;
+	text-align:left;
+}

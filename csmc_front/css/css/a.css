@@ -1,0 +1,13 @@
+a, a:link, a:visited{
+	color:#00AD14;
+	text-decoration:underline;
+	cursor:pointer;
+}
+a:active, a:hover{
+	color:#00AD14;
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+}
