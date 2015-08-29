@@ -59,6 +59,33 @@ class ios{
 				log::add(LOG::NOTICE, "Ajax Request failed with missing parameters.");
 				redirects::error(401);
 			}
+		} else if(isset($_GET["_escaped_fragment_"])){
+			log::add(log::NOTICE, "A new _escaped_fragment_ request was made.");
+			$ncm = explode("/", $_GET["_escaped_fragment_"]);
+			echo count($ncm);
+			if(count($ncm) >= 3){
+				$fully_qualified_classname = self::existsClass($ncm[1], $ncm[2]);
+				$method = $ncm[3];
+				if($fully_qualified_classname != "" 								// If the fully qualified class name is not empty
+				&& self::existsMethod($fully_qualified_classname, $ncm[3]) 			// and the specified class and method exist
+																					// in the native or module namespace
+				&& isset($fully_qualified_classname::$func_whitelist) 				// and a func_whitelist array is set
+				&& in_array($method, $fully_qualified_classname::$func_whitelist))	// and the method is a method name in the func_whitelist array
+				{
+					$objClass = new $fully_qualified_classname;
+					ui::create($objClass->$method());
+					log::add(LOG::NOTICE, "Escaped fragment successful for ". $fully_qualified_classname . "::". $method ." .");
+					return;
+				} else {
+					//If you get this redirect than you are sure that one of the above conditions failed and
+					//should be checked by reading the debug log entries.
+					log::add(LOG::NOTICE, "Escaped fragment request failed for ". $fully_qualified_classname . "::". $method ." .");
+					redirects::error(404);
+				}
+			} else {
+				log::add(LOG::NOTICE, "Escaped fragment request failed. With ".$ncm[1]." ".$ncm[2]." ".$ncm[3]);
+				redirects::error(401);
+			}
 		} else {
 			//If the application is being initialized for the first time or session the entire framework must be configured
 			//after this the configuration is not required and the ui is created. This allows for faster ui display after the first

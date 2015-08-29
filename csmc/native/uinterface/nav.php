@@ -24,7 +24,7 @@ class nav{
 			return $_COOKIE["csmc_native_nav_status"];
 		} else {
 			self::setStatus("hidden");
-			return $_COOKIE["csmc_native_nav_status"]
+			return $_COOKIE["csmc_native_nav_status"];
 		}
 	}
 	/**
