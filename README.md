@@ -4,11 +4,23 @@ A simple and easy to configure modular PHP framework.
 
 #Concept
 
-This framework was created with educational purposes but it can be used to develop applications and websites for production although there might be, for now, types of website for which this framework might not be the best option. Learn about the framework mechanics in the wiki and find out if it fits your project needs.
+This framework was created with educational purposes but it can be used to develop applications and websites for production. There might be, for now, some types of website for which this framework might not be the best option (See the NOT AVAIABLE YET section bellow). Learn about the framework mechanics in the wiki and find out if it fits your project needs.
 
-This framework was developed to be an easy way to create user interfaces for several software and hardware projects that require one, such as C, C++ or arduino that have no easy way of creating a modern and easy to setup interface.
+This framework was developed to be an easy way to create any kind of websites or applicationsuser interfaces for some software and hardware projects that require one, such as C, C++ or arduino that have no easy way of creating a modern and easy to set up interface.
 
-The best part is that this framework is modular and the only thing you have to do is create your own php modules following the module creation specification (a model file comes with the project "csmc\modules\module_module.php") and from there it's all about letting your imagination flow. Comunicate using sockets (tcp, http, websockets,...), mysql database or even serial communication! <3
+The best part is that this framework is modular and the only thing you have to do is create your own php modules following the module creation specification (a model file comes with the project "csmc\modules\module_module.php") and from there it's all about letting your imagination flow. Communicate using sockets (tcp, http, websockets,...), mysql database or even serial communication! <3
+
+#What is NOT AVAIABLE YET and will be added as possible
+
+1. SEO support for the #! (_unscaped_fragment) mechanism.
+2. A more friendly way to edit the css and js code.
+
+#What WILL BE DONE
+
+1. Add what is not yet avaiable.
+2. Add more capacity and flexibility as are found the need to do so.
+
+This is where having an open source distribution is great and if you want to commit something just let me know.
 
 #How to use
 
