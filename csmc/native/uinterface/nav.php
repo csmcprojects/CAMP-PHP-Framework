@@ -81,7 +81,7 @@ class nav{
 	 * @param  [string] $name 	[The name to be displayed by the link-button.]
 	 * @return [string]       	[The formated link-button template.]
 	 */
-	protected static function link($action, $target, $name){
+	protected static function link($url, $target, $name){
 		return '<button><a href="'.$url.'" target="'.$target.'"><span>'.$name.'</span></a></button>';
 	}
 	/**
