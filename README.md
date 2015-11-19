@@ -37,9 +37,55 @@ The only thing to be done in this file is to define the name of the instance and
 
 ###3.1 - Naming the config file
 
-Next, go to the csmc folder and copy the "instance.csmc.php" file and change the name so that if you defined the instance name as ```php define("__INSTANCE__", "duck"); ``` the config file must be called "instance.duck.config".
+Next, go to the csmc folder and copy the "instance.csmc.php" file and change the name so that if you defined the instance name as ```define("__INSTANCE__", "duck");``` the config file must be called "instance.duck.config".
 
 ###3.2 - Configuration
+
+The config file
+
+```json
+
+info{
+    "info": {
+        "app_name": "WebApp",
+        "url": "",
+        "image": "/static/app.image.jpg",
+		"webmaster_email": ""
+    },
+    "html": {
+		"charset": "utf-8",
+		"viewport": "width=device-width, initial-scale=1.0, user-scalable=no",
+		"generator": "",
+		"base": "/index.php",
+		"favicon": "favicon.ico",
+        "user_lang": "en",
+        "description": "This is a web app.",
+        "atst": "WebApp",
+        "amwac": "yes",
+		"mwac": "yes",
+        "amawsbs": "black-translucent",
+		"cti192": "",
+        "ati": ""
+    },
+    "database": {
+		"omysqli": {
+			"host": "",
+			"user": "",
+			"pass": "",
+			"db": ""
+		}
+    },
+    "salt": "da$gR&/3$|!naerBr$%!#%gs#%RG",
+    "startup" : {
+		"namespace": "",
+        "classname": "",
+        "method": ""
+	},
+    "timezone": "Europe/Lisbon"
+}
+
+```
+
 ####3.2.1 - info - General information
 
 1. app_name - The name of the application or website.
