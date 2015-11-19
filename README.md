@@ -30,14 +30,26 @@ In there you will find the following code:
 	new csmc\native\csmc();
 ?>
 ```
+First you must define the 
 
-The only thing to be done in this file is to define the name of the instance and to set the development environment accordingly to the status of your project.
+```php 
+	define("CSMC_CORE_ROOT", "../csmc")
+``` 
+
+so that the framework can find the folder without a problem. There SHOULD NOT be any need to change any additional paths on this or other framework file.
+
+The only thing left to be done in this file is to define the name of the instance and to set the development environment accordingly to the status of your project.
 
 ##3 - Setup the config file
 
 ###3.1 - Naming the config file
 
-Next, go to the csmc folder and copy the "instance.csmc.php" file and change the name so that if you defined the instance name as ```define("__INSTANCE__", "duck");``` the config file must be called "instance.duck.config".
+Next, go to the csmc folder and copy the "instance.csmc.php" file and change the name so that if you defined the instance name as 
+
+```php
+	define("__INSTANCE__", "duck");
+```
+the config file must be called "instance.duck.config".
 
 ###3.2 - Configuration
 
