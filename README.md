@@ -31,23 +31,23 @@ In there you will find the following code:
 ?>
 ```
 
-The only thing you need to do in here is to set the name of the instance that this domain will be running and that must also be the name of your config file.
-Set the development environment accordingly to the status of your project.
+The only thing to be done in this file is to define the name of the instance and to set the development environment accordingly to the status of your project.
 
 ##3 - Setup the config file
 
 ###3.1 - Naming the config file
-Go to the csmc folder and copy the "instance.csmc.php" file and change the name with account to the name of the instance you set earlier. So, if you name the instance duck the config file must be called "instance.duck.config".
+
+Next, go to the csmc folder and copy the "instance.csmc.php" file and change the name so that if you defined the instance name as ```php define("__INSTANCE__", "duck"); ``` the config file must be called "instance.duck.config".
 
 ###3.2 - Configuration
-####3.2.1 - info
+####3.2.1 - info - General information
 
 1. app_name - The name of the application or website.
 2. url - The base url of the application or website.
 3. image - An image to be assigned to the og:image meta tag.
 4. webmaster_email - The webmaster email.
 
-####3.2.2 - html
+####3.2.2 - html - Meta-tag information
 
 1. charset - The charset of the application or website.
 2. viewport - The viewport configuration.
@@ -63,7 +63,7 @@ Go to the csmc folder and copy the "instance.csmc.php" file and change the name 
 12. cti192 - The logo of the application 192x192 for some phones.
 13. ati - The logo of the application for an apple homescreen touch icon.
 
-####3.2.3 - database (mysql)
+####3.2.3 - database (mysql) - Database access
 
 1. host - The url of the database host.
 2. user - The username of the database.
@@ -71,11 +71,11 @@ Go to the csmc folder and copy the "instance.csmc.php" file and change the name 
 4. db - The name of the database.
 5. 
 
-####3.2.4 - salt
+####3.2.4 - salt - Security
 
 1. salt - A unique key for the application to be used by the framework.
 
-####3.2.5 - startup
+####3.2.5 - startup - Landing page
 
 1. namespace - The name of the namespace class that contains the method to be executed as the landing page.
 2. classname - The name of the class that contains the method.
