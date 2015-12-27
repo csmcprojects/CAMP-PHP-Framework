@@ -10,15 +10,8 @@ This framework was developed to be an easy way to create any kind of websites or
 
 The best part is that this framework is modular and the only thing you have to do is create your own php modules following the module creation specification (a model file comes with the project "csmc\modules\module_module.php") and from there it's all about letting your imagination flow. Communicate using sockets (tcp, http, websockets,...), mysql database or even serial communication! <3
 
-#What is NOT AVAIABLE YET and will be added as possible
-
-1. SEO support for the #! (_unscaped_fragment) mechanism.
-2. A more friendly way to edit the css and js code.
-
-#What WILL BE DONE
-
-1. Add what is not yet avaiable.
-2. Add more capacity and flexibility as are found the need to do so.
+#To go deep
+To know a lot more attend to the wiki section to know about the framework mechanics and reference manuals.
 
 This is where having an open source distribution is great and if you want to commit something just let me know.
 
