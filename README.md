@@ -165,4 +165,4 @@ By now you SHOULD be able to see a functional webpage showing up with a greenish
 
 To learn more about the framework mechanics, how to create modules for a website or application and more attend to the wiki in this repository.
 
-(C) Carlos Campos - Last updated (19-11-2015)
+(C) Carlos Campos - Last updated (27-12-2015)
