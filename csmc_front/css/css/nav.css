@@ -23,10 +23,10 @@ nav {
 	height: 65px;
 	padding: 22px;
 }
-.nav_option_button:hover{
+.nav_option_button:hover ,.desktop_option_button:hover{
 	background-color: #2C907D;
 }
-.nav_option_button{
+.nav_option_button, .desktop_option_button{
 	width: auto;
 	background-color: #444;
 	height: 76px;
@@ -36,3 +36,5 @@ nav {
 	margin-left: 10px;
 	font-size: 14px;
 }
+
+

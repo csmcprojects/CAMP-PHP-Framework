@@ -25,7 +25,7 @@ class json{
 	* $responseSpawn		- The page location where the response will be shown
 	* $args					- A fourth argument that is a javascript script to be executed
 	*/
-	public function send($response, $notification, $responseSpawn, $statusHeader = 200){
+	public static function send($response, $notification, $responseSpawn, $statusHeader = 200){
 		$args = func_get_args();
 		if(count($args) > 4){
 			$script = $args[4];

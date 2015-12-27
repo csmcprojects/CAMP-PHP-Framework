@@ -49,6 +49,9 @@ class nav{
 			return "";
 		}
 	}
+	/**
+	 * Clears the menu.
+	 */
 	public static function reboot(){
 		if(isset($_SESSION["csmc_native_uinterface_nav_content"])){
 			$_SESSION["csmc_native_uinterface_nav_content"] = "";
@@ -59,7 +62,7 @@ class nav{
 	 * [setContent Appends new content to the $_SESSION["csmc_native_uinterface_nav_content"] array.]
 	 * @param [string] $content [The content to be added.]
 	 */
-	protected static function setContent($content){
+	private static function setContent($content){
 		if(!isset($_SESSION["csmc_native_uinterface_nav_content"])){
 			$_SESSION["csmc_native_uinterface_nav_content"] = "";
 		}
@@ -71,8 +74,17 @@ class nav{
 	 * @param  [string] $name [The name to be displayed by the button.]
 	 * @return [string]       [The formated button template.]
 	 */
-	protected static function button($id, $name){
+	private static function button($id, $name){
 		return '<button id="'.$id.'" class="nav_option_button">'.$name.'</button>';
+	}
+	/**
+	 * [desktopButton The ncm-button template]
+	 * @param  [string] $id   [A ncm id compatible with the ajax request protocol.]
+	 * @param  [string] $name [The name to be displayed by the button.]
+	 * @return [string]       [The formated button template.]
+	 */
+	private static function desktopButton($id, $name){
+		return '<button id="'.$id.'" class="desktop_option_button">'.$name.'</button>';
 	}
 	/**
 	 * [link The link-button template]
@@ -81,7 +93,7 @@ class nav{
 	 * @param  [string] $name 	[The name to be displayed by the link-button.]
 	 * @return [string]       	[The formated link-button template.]
 	 */
-	protected static function link($url, $target, $name){
+	private static function link($url, $target, $name){
 		return '<button><a href="'.$url.'" target="'.$target.'"><span>'.$name.'</span></a></button>';
 	}
 	/**
@@ -108,6 +120,15 @@ class nav{
 	 */
 	public static function getButton($id, $name){
 		return(self::button($id, $name));
+	}
+	/**
+	 * [getDesktopButton Returns a formatted ncm-button template.]
+	 * @param  [type] $id   [description]
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
+	public static function getDesktopButton($id, $name){
+		return(self::desktopButton($id, $name));
 	}
 	/**
 	 * [setLink Adds a link-button to the navigation bar.]

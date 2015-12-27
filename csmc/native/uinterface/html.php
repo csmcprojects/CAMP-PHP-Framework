@@ -123,7 +123,7 @@ class html{
 	 *  SHOULD BE SET IN THE CSMC_SETUP METHOD.]
 	 * @param [string] $string [The header string.]
 	 */
-	public function setHtmlHeaders($string){
+	public static function setHtmlHeaders($string){
 		if(!isset($_SESSION["csmc_native_uinterface_html_headers"])){
 			$_SESSION["csmc_native_uinterface_html_headers"] = array();
 		}

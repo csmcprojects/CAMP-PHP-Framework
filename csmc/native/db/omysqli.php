@@ -17,7 +17,7 @@ use csmc\native\debug\log as log;
 class omysqli {
 
     protected 	$omysqli; 		//The database connection object
-    public      $errorFlag = false;
+    public      $errorFlag = false; //Error flag for the connection
     /**
      * [__construct Initializes a mysqli connection and stores the object in $omysqli]
      */
@@ -42,12 +42,12 @@ class omysqli {
         } else {
             if(empty(trim($dbOAuth["db"]))){
                 log::add(LOG::WARNING, "A database must be specified.");
-                $errorFlag = true;
+                $this->errorFlag = true;
                 redirects::error(707, "A database name must be specified.");
                 exit();
             }
             $this->omysqli = new \mysqli($dbOAuth["host"], $dbOAuth["user"], $dbOAuth["pass"], $dbOAuth["db"]);
-            if($this->errno() != 0){
+            if($this->omysqli->connect_errno){
                 $this->errorFlag = true;
                 redirects::error(707, $this->omysqli->error);
                 exit();
@@ -65,13 +65,11 @@ class omysqli {
     }
     /**
      * errno - Returns a mysqli error message
-     * @return [type]
+     * @return [string]
      */
-    public function errno(){
+    public function error(){
         //Only shows errors if the omysqli connection has been open
-        if($this->errorFlag === false){
-            return $this->omysqli->connect_errno;
-        }
+        return $this->omysqli->error;
 	}
     /**
      * [[Sanitize using real_escape, htmlentities and strip tags.]]
@@ -83,9 +81,9 @@ class omysqli {
         return $cleanObj;
     }
     /**
-     * [[dataExecute Returns an assoc array of data]
-     * @param   string $table [[Description]]
-     * @param   [[Type]] $rows  [[Description]]
+     * [[dataExecute Returns a multidimensional associative array of data]
+     * @param   string $query [[Description]]
+     * @param   string $rows  [[Description]]
      * @returns Boolean  [[Description]]
      */
     public function dataExecute($query, $rows){
@@ -98,6 +96,7 @@ class omysqli {
             //The name of the array keys, that are the names of the rows
             $arrayKeys = explode(',', $rows);
             $i = 0;
+            //IMPORTANT: The array must be accessed at index 1
 			$ii = 0;
             //For each row[i] => (colum[i])
 			//Iterates over each row
@@ -113,11 +112,7 @@ class omysqli {
             //Frees the buffer from the data
             $stmt->free();
             //Returns the multidimensional array of the type array[i][colum_name]
-            if(count($return) == 1){
-                return $return[0];
-            } else {
-                return $return;
-            }
+            return $return;              
         } else {
             return false;
         }
@@ -137,15 +132,15 @@ class omysqli {
                 return $count;
             } else {
                $stmt->close();
-                return -1;
+               return false;
             }
         } else {
-            return -1;
+            return false;
         }
     }
 
 	/**
-     * [[boolExecute an existing record into a certain table]]
+     * [[boolExecute Executes a query that does not return a value.]]
      * @returns Boolean [if an error occurs returns false, else true]
      */
     public function boolExecute($query){

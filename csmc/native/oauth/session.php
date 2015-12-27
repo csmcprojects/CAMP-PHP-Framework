@@ -12,15 +12,16 @@ namespace csmc\native\oauth;
 
 use csmc\native\debug\log as log;
 use csmc\native\framework\json as json;
-use csmc\native\db\omysqli as omysqli;
-use csmc\native\security\device as device;
 use csmc\native\framework\redirects as redirects;
 
 
 class session
 {
-	public static $func_whitelist = array("destroy");
+	public static $func_whitelist = array("reset");
 
+	/**
+	 * Initializes the session and places the locks.
+	 */
 	public function __construct(){
 		if (session_status() !== PHP_SESSION_ACTIVE){
 			//Starts the session
@@ -103,10 +104,10 @@ class session
 		}
 	}
 	/**
-	 * [destroy Destroys the session by cleaning all meanfull variables.]
+	 * [destroy Destroys the session by cleaning all variables.]
 	 * @return [void]
 	 */
-	public static function destroy(){
+	public static function reset(){
 		log::add(log::DEBUG, "Session destroyed!");
 		//Cleans all session variables
 		$_SESSION = array();

@@ -1,22 +1,45 @@
 (function(e,t,n){"$:nomunge";function f(e){e=e||location.href;return"#"+e.replace(/^[^#]*#?(.*)$/,"$1")}var r="hashchange",i=document,s,o=e.event.special,u=i.documentMode,a="on"+r in t&&(u===n||u>7);e.fn[r]=function(e){return e?this.bind(r,e):this.trigger(r)};e.fn[r].delay=50;o[r]=e.extend(o[r],{setup:function(){if(a){return false}e(s.start)},teardown:function(){if(a){return false}e(s.stop)}});s=function(){function c(){var n=f(),i=l(o);if(n!==o){a(o=n,i);e(t).trigger(r)}else if(i!==o){location.href=location.href.replace(/#.*/,"")+i}s=setTimeout(c,e.fn[r].delay)}var i={},s,o=f(),u=function(e){return e},a=u,l=u;i.start=function(){s||c()};i.stop=function(){s&&clearTimeout(s);s=n};return i}()})(jQuery,this)
 function ajaxHashConfig(parameters){
 	if(location.hash != ""){
-		a = location.hash.split("/?/");
-		nmc = a[0].split("#!/")[1].split("/");
-		config = {
-		   "typee"		: 	"POST",
-		   "url"		: 	_base_url,
-		   "data"		: 	{
-								ajax:"",
-								namespace:nmc[0],
-								classname:nmc[1],
-								method:nmc[2],
-								params:parameters
-							},
-			"async"		: 	true,
-			"dataType" 	: 	"json",
-			"spawn"     :   "desktop"
-		};
+		var a = location.hash.split("/?/");
+		var nmc = a[0].split("#!/")[1].split("/");
+		if(parameters == null && a[1] != null){
+			var gparameters = new Object();
+			for (var i = 0; i <  (a[1].split("/")).length; i++) {
+				gparameters[i] = a[1].split("/")[i];
+			};
+			gparameters = JSON.stringify(gparameters);
+			var config = {
+			   "typee"		: 	"POST",
+			   "url"		: 	_base_url,
+			   "data"		: 	{
+									ajax:"",
+									namespace:nmc[0],
+									classname:nmc[1],
+									method:nmc[2],
+									getParams:gparameters
+								},
+				"async"		: 	true,
+				"dataType" 	: 	"json",
+				"spawn"     :   "desktop"
+			};
+		} else {
+			var config = {
+			   "typee"		: 	"POST",
+			   "url"		: 	_base_url,
+			   "data"		: 	{
+									ajax:"",
+									namespace:nmc[0],
+									classname:nmc[1],
+									method:nmc[2],
+									postParams:parameters
+								},
+				"async"		: 	true,
+				"dataType" 	: 	"json",
+				"spawn"     :   "desktop"
+			};
+		}
+		
 		return config;
 	}
 }
@@ -53,20 +76,32 @@ function ajaxRequest(config){
 	});
 };
 $(document).ready(function(){
-	$(document).off().on("click", ".form_button",function(e){
+	$(document).off().on("click", ".desktop_option_button",function(e){
 		e.preventDefault();
+		/* START This code is responsible for getting the post parameters from the form button and it's values*/
 		_parameters = new Object();
 		var elements = this.id;
 		var params = this.id;
-		params = params.split("#");
+		/* The # separates the namespace_class_method#parameter1&parameter2&...&parameterN */
+		params = params.split("!");
 		if(params == this.id){
+			/* If there is no parameters */
 			elements = elements.split("_");
 		} else {
+			/* If there are parameters */
+			/* Get an array with all the parameters */
 			params = (params[1]).split("&");
+			/* The parameter is also the id of the form element which contains the value we want */
 			$.each( params, function( key, value ) {
-				_parameters[value] = $("#"+value).val();
+				if(value.split("=") != null){
+					_parameters[value.split("=")[0]] = value.split("=")[1];	
+				} else {
+					_parameters[value] = $("#"+value).val();
+				}
+				
 			});
-			elements = elements.split("#");
+			/* Creates a the string to be shown in the url section. Because it is a post request it will no show the parameters */
+			elements = elements.split("!");
 			elements = elements[0].split("_");
 			_parameters = JSON.stringify(_parameters);
 		}
@@ -74,11 +109,14 @@ $(document).ready(function(){
 		$.each( elements, function( key, value ) {
 			hash += "/"+value;
 		});
+		/* END */
 		if(location.hash == hash){
 			ajaxRequest(ajaxHashConfig(_parameters));
+			_parameters = null;
 		} else {
 			location.hash = hash;
 		}
+
 		return true;
 	});
 	$(window).hashchange(function(){
@@ -87,6 +125,7 @@ $(document).ready(function(){
 		resHashChange = setTimeout(function(){
 			if(location.hash != ""){
 				ajaxRequest(ajaxHashConfig(_parameters));
+				_parameters = null;
 			}
 		},250);
 	});

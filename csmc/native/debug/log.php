@@ -50,7 +50,7 @@ class log{
 	 * @param string $log   [The log message]
      * @returns String   [Description]
      */
-    public static function format($level, $log){
+    private static function format($level, $log){
     	//Sets the timezone
 		@date_default_timezone_set(config::getInstanceTimezoneDetails());
         //Format as you wish
@@ -62,7 +62,7 @@ class log{
 	 * @param [string] $log   [The formated log message]
 	 * @returns String   [Description]
 	 */
-	public static function color($level, $formated_log){
+	private static function color($level, $formated_log){
         if($level == self::EMERGENCY || $level == self::ALERT || $level == self::CRITICAL || $level == self::ERROR){
 			return '<p style="color:red">'.$formated_log.'</p>';
 		} else if($level == self::WARNING){

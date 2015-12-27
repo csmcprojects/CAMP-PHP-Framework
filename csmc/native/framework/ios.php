@@ -31,8 +31,26 @@ class ios{
 		if(isset($_POST["ajax"])){
 			log::add(log::NOTICE, "A new ajax request was made.");
 			//Set post parameters that are passed by an ajax call
-			if(isset($_POST["params"])){
-				$_SESSION["post_params"] = json_decode($_POST["params"], true);
+			if(isset($_POST["postParams"])){
+				$_SESSION["post_params"] = array();
+				$_SESSION["get_params"] = array();
+				if(is_array($_POST["postParams"])){
+					foreach ($_POST["postParams"] as $key => $value) {
+						$_SESSION["post_params"] = json_decode($value, true);
+					}
+				} else {
+				  $_SESSION["post_params"] = json_decode($_POST["postParams"], true);			
+				}
+			} else if(isset($_POST["getParams"])){
+				$_SESSION["post_params"] = array();
+				$_SESSION["get_params"] = array();
+				if(is_array($_POST["getParams"])){
+					foreach ($_POST["getParams"] as $key => $value) {
+						$_SESSION["get_params"] = json_decode($value, true);
+					}
+				} else {
+				  $_SESSION["get_params"] = json_decode($_POST["getParams"], true);			
+				}
 			}
 			//Checks if the model of the request is followed and all the necessary verifications to
 			//a successful request
@@ -61,31 +79,7 @@ class ios{
 			}
 		} else if(isset($_GET["_escaped_fragment_"])){
 			log::add(log::NOTICE, "A new _escaped_fragment_ request was made.");
-			$ncm = explode("/", $_GET["_escaped_fragment_"]);
-			echo count($ncm);
-			if(count($ncm) >= 3){
-				$fully_qualified_classname = self::existsClass($ncm[1], $ncm[2]);
-				$method = $ncm[3];
-				if($fully_qualified_classname != "" 								// If the fully qualified class name is not empty
-				&& self::existsMethod($fully_qualified_classname, $ncm[3]) 			// and the specified class and method exist
-																					// in the native or module namespace
-				&& isset($fully_qualified_classname::$func_whitelist) 				// and a func_whitelist array is set
-				&& in_array($method, $fully_qualified_classname::$func_whitelist))	// and the method is a method name in the func_whitelist array
-				{
-					$objClass = new $fully_qualified_classname;
-					ui::create($objClass->$method());
-					log::add(LOG::NOTICE, "Escaped fragment successful for ". $fully_qualified_classname . "::". $method ." .");
-					return;
-				} else {
-					//If you get this redirect than you are sure that one of the above conditions failed and
-					//should be checked by reading the debug log entries.
-					log::add(LOG::NOTICE, "Escaped fragment request failed for ". $fully_qualified_classname . "::". $method ." .");
-					redirects::error(404);
-				}
-			} else {
-				log::add(LOG::NOTICE, "Escaped fragment request failed. With ".$ncm[1]." ".$ncm[2]." ".$ncm[3]);
-				redirects::error(401);
-			}
+			echo $_GET["_escaped_fragment_"];
 		} else {
 			//If the application is being initialized for the first time or session the entire framework must be configured
 			//after this the configuration is not required and the ui is created. This allows for faster ui display after the first
@@ -170,10 +164,10 @@ class ios{
 	/**
 	 * [commands A list of commands that can be executed in many situations]
 	 */
-	public static function commands(){
+	private static function commands(){
 		//Reboots the application
 		if(isset($_GET["exit"]) && !isset($_POST["ajax"])){
-			session::destroy();
+			session::reset();
 		}
 		//Shows the application log if in debug mode
 		// NOTE: IP restriction will be added in the future
