@@ -18,6 +18,7 @@ use csmc\native\uinterface\ui as ui;
 /**
  * The input/output class that handles all the requests and responses.
  */
+ 
 class ios{
 
     //Initializes the instance
@@ -31,30 +32,12 @@ class ios{
 		if(isset($_POST["ajax"])){
 			log::add(log::NOTICE, "A new ajax request was made.");
 			//Set post parameters that are passed by an ajax call
-			if(isset($_POST["postParams"])){
-				$_SESSION["post_params"] = array();
-				$_SESSION["get_params"] = array();
-				if(is_array($_POST["postParams"])){
-					foreach ($_POST["postParams"] as $key => $value) {
-						$_SESSION["post_params"] = json_decode($value, true);
-					}
-				} else {
-				  $_SESSION["post_params"] = json_decode($_POST["postParams"], true);			
-				}
-			} else if(isset($_POST["getParams"])){
-				$_SESSION["post_params"] = array();
-				$_SESSION["get_params"] = array();
-				if(is_array($_POST["getParams"])){
-					foreach ($_POST["getParams"] as $key => $value) {
-						$_SESSION["get_params"] = json_decode($value, true);
-					}
-				} else {
-				  $_SESSION["get_params"] = json_decode($_POST["getParams"], true);			
-				}
-			}
+			self::setPostAndGetParams();
 			//Checks if the model of the request is followed and all the necessary verifications to
 			//a successful request
-			if(!empty(trim($_POST["namespace"])) && !empty(trim($_POST["classname"])) && !empty(trim($_POST["method"]))){
+			if(trim($_POST["namespace"]) != false &&
+             trim($_POST["classname"]) != false && 
+             trim($_POST["method"]) != false ){
 				$method = $_POST["method"];
 				$fully_qualified_classname = self::existsClass($_POST["namespace"], $_POST["classname"]);
 				if($fully_qualified_classname != "" 								// If the fully qualified class name is not empty
@@ -79,7 +62,45 @@ class ios{
 			}
 		} else if(isset($_GET["_escaped_fragment_"])){
 			log::add(log::NOTICE, "A new _escaped_fragment_ request was made.");
-			echo $_GET["_escaped_fragment_"];
+			//get ncm
+			//get GET parameters
+			//create ui with startup defined
+			self::setPostAndGetParams();
+			//Checks if the model of the request is followed and all the necessary verifications to
+			//a successful request
+			$urlStrings = explode("/", $_GET["_escaped_fragment_"]); // array {namespace, class, method, ?, param1, param2}
+			if($urlStrings[1] != false && $urlStrings[2] != false && $urlStrings[3] != false && trim($urlStrings[1]) != false && trim($urlStrings[2]) != false && trim($urlStrings[3]) != false){
+				$method = $urlStrings[3];
+				$fully_qualified_classname = self::existsClass($urlStrings[1], $urlStrings[2]);
+				if($fully_qualified_classname != "" 								// If the fully qualified class name is not empty
+				&& self::existsMethod($fully_qualified_classname, $method) 			// and the specified class and method exist
+																					// in the native or module namespace
+				&& isset($fully_qualified_classname::$func_whitelist) 				// and a func_whitelist array is set
+				&& in_array($method, $fully_qualified_classname::$func_whitelist))	// and the method is a method name in the func_whitelist array
+				{
+					$objClass = new $fully_qualified_classname;
+					//Checks if there are parameters in the url
+					if(isset($urlStrings[5])){
+						//selects the parameters from the url array
+						$paramArray = array_slice($urlStrings, 5);
+						foreach ($paramArray as $value) {
+							//Adds the get params to the session variable
+							self::setGetParams($value);
+						}
+					}
+					$objClass->$method();
+					log::add(LOG::NOTICE, "GET Request successful for ". $fully_qualified_classname . "::". $method ." .");
+					return;
+				} else {
+					//If you get this redirect than you are sure that one of the above conditions failed and
+					//should be checked by reading the debug log entries.
+					log::add(LOG::NOTICE, "GET Request failed for ". $fully_qualified_classname . "::". $method ." .");
+					redirects::error(404);
+				}
+			} else {
+				log::add(log::NOTICE, "GET Request failed, missing arguments.");
+				redirects::error(404, "Missing arguments ".$_GET["_escaped_fragment_"]);
+			}
 		} else {
 			//If the application is being initialized for the first time or session the entire framework must be configured
 			//after this the configuration is not required and the ui is created. This allows for faster ui display after the first
@@ -120,6 +141,7 @@ class ios{
 			if(isset($_SESSION["csmc_native_uinterface_ui_startupcall"])){
 				return $message;
 			} else {
+				//for the _escaped_fragment_ cases
 				echo ui::create($message);
 				return;
 			}
@@ -160,9 +182,55 @@ class ios{
 			return false;
 		}
 	}
-
+	
 	/**
-	 * [commands A list of commands that can be executed in many situations]
+	 * ios::setPostAndGetParams() Sets in a session variable the GET and POST parameters. 
+	 * 
+	 * @return void
+	 */
+	private static function setPostAndGetParams(){
+		if(isset($_POST["postParams"])){
+			$_SESSION["post_params"] = array();
+			$_SESSION["get_params"] = array();
+			if(is_array($_POST["postParams"])){
+				foreach ($_POST["postParams"] as $key => $value) {
+					$_SESSION["post_params"] = json_decode($value, true);
+				}
+			} else {
+			  $_SESSION["post_params"] = json_decode($_POST["postParams"], true);			
+			}
+		} else if(isset($_POST["getParams"])){
+			$_SESSION["post_params"] = array();
+			$_SESSION["get_params"] = array();
+			if(is_array($_POST["getParams"])){
+				foreach ($_POST["getParams"] as $key => $value) {
+					$_SESSION["get_params"] = json_decode($value, true);
+				}
+			} else {
+			  $_SESSION["get_params"] = json_decode($_POST["getParams"], true);			
+			}
+		}
+	}
+    
+	/**
+	 * ios::setGetParams() Sets in the get session variable a string of parameters values separated by /.
+	 * 
+	 * @param mixed $string
+	 * @return void
+	 */
+	public static function setGetParams($string){
+		if(!isset($_SESSION["get_params"])){
+			self::setPostAndGetParams();
+		}
+        foreach(explode("/", $string) as $value){
+            $_SESSION["get_params"][] = $string;
+        }		
+	}
+	
+	/**
+	 * ios::commands() A list of commands that can be executed in many situations.
+	 * 
+	 * @return
 	 */
 	private static function commands(){
 		//Reboots the application

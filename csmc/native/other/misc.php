@@ -35,12 +35,15 @@ class misc{
 	 */
 	public static function getFileContent($filePath){
 		$data = @file_get_contents($filePath);
-		if($data === FALSE){
+		if($data === false){
 			return false;
 		} else {
 			return $data;
 		}
 	}
+	/**
+	 *
+	 */
 	public static function stringContains($string, $keyword){
 		if (strpos($string, $keyword) !== false) {
 			return true;

@@ -32,7 +32,7 @@ class config{
 	public static function start(){
 		//Checks if instance name exists and is set
 		if(defined("__INSTANCE__")){
-			if(!empty(__INSTANCE__) === true){
+			if(__INSTANCE__ !== null){
 				//Checks if dev_environment setting exists and is set, if exists but invalid a default is set
 				if(defined("__DEV_ENVIRONMENT__")){
 					if(__DEV_ENVIRONMENT__ == 0 || __DEV_ENVIRONMENT__ == 1){
@@ -51,7 +51,7 @@ class config{
 								//Loads the modules
 								if(self::modulesConfig()){
 									//Gets the application salt key
-									$salt = config::getSalt();
+                                    $salt = config::getSalt();
 									//Checks if the salt field is missing from the configuration file
 									if($salt == ""){
 										redirects::error(704, "Missing salt index or salt index is empty.");
@@ -96,7 +96,8 @@ class config{
 		}
 		return false;
 	}
-	private static function getSalt(){
+
+	public static function getSalt(){
 		$details = json_decode(misc::getFileContent(INSTANCE_CONFIG_ROOT), true);
 		if(!isset($details["salt"])){
 			return "";
@@ -142,8 +143,11 @@ class config{
 			!isset($_SESSION["csmc_native_config"]["startup"]["namespace"]) ||
 			!isset($_SESSION["csmc_native_config"]["startup"]["classname"]) ||
 			!isset($_SESSION["csmc_native_config"]["startup"]["method"]) ||
+			!isset($_SESSION["csmc_native_config"]["startup"]["params"]) ||
 			!isset($_SESSION["csmc_native_config"]["timezone"]))
 		{
+			print_r($_SESSION["csmc_native_config"]);
+			log::add(log::WARNING, "Config file failed to load.");
 			return false;
 		}
 		//We don't want db details to be stored in a global variable,
@@ -234,8 +238,9 @@ class config{
 		return $details["database"];
 	}
 	/**
-	 * [getInstanceStartupDetails Returns the full qualified classname and method to be executed on startup.]
-	 * @return [array] [ the full qualified classname and method (classname, method).]
+	 * [getInstanceStartupDetails Returns the full qualified classname and method to be executed on startup as well the GET parameters.
+     *                            If the user is logged in a different set of parameters is send as set in the config file.]
+	 * @return [array] [ the full qualified classname, method and GET parameters if set. (classname, method, GET parameters).]
 	 */
 	public static function getInstanceStartupDetails(){
 		//If the user is logged in a certain homepage is shown
@@ -253,13 +258,13 @@ class config{
 			}
 			//Checks on the module namespace if the chosen method exists
 			if(ios::existsMethod(MODULE_NAMESPACE.$startup["classname"], $startup["method"])){
-				return array(MODULE_NAMESPACE.$startup["classname"], $startup["method"]);
+				return array(MODULE_NAMESPACE.$startup["classname"], $startup["method"], $startup["params"]);
 			} else {
 				//Checks on the native namespace if the chosen method exists
 				if(ios::existsMethod(NATIVE_NAMESPACE.$startup["namespace"]."\\".$startup["classname"], $startup["method"])){
-					return array(NATIVE_NAMESPACE.$startup["namespace"]."\\".$startup["classname"], $startup["method"]);
+					return array(NATIVE_NAMESPACE.$startup["namespace"]."\\".$startup["classname"], $startup["method"], $startup["params"]);
 				} else {
-					log::add(LOG::DEBUG, "Invalid namespace, classname or method for startup page.");
+					log::add(LOG::WARNING, "Invalid namespace, classname or method for startup page.");
 					return array();
 				}
 			}
@@ -272,7 +277,7 @@ class config{
 	 * [setTimezone Sets the timezone as configured in the config file.]
 	 * @return [bool] [True if timezone set successfully. False if timezone identifier is invalid.]
 	 */
-	public static function setTimezone(){
+	public static function setInstanceTimezoneDetails(){
 		//Gets the timezone details from the config file
 		$timezone = self::getInstanceTimezoneDetails();
 		//Sets the timezone

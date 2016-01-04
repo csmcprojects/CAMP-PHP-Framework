@@ -63,7 +63,7 @@ class session
 				return true;
 			} else {
 				log::add(log::DEBUG, "The locks and keys don't match. Destroying session.");
-				self::destroy();
+				self::reset();
 			}
 		}
 		/**
@@ -120,9 +120,9 @@ class session
 		session_destroy();
 		//Returns to homepage
 		if(isset($_GET["exit"])){
-			redirects::home();
+			redirects::redirectHome();
 		} else {
-			redirects::home("", "Logout successfull", 1500);
+			redirects::redirectHome("", "Logout successfull", 1500);
 		}
 	}
 }

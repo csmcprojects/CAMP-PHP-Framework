@@ -13,11 +13,12 @@ namespace csmc\native\db;
 use csmc\native\framework\config as config;
 use csmc\native\framework\redirects as redirects;
 use csmc\native\debug\log as log;
+use \mysqli as mysqli;
 
 class omysqli {
 
-    protected 	$omysqli; 		//The database connection object
-    public      $errorFlag = false; //Error flag for the connection
+    private 	$omysqli; 		        //The database connection object
+    public     $errorFlag = false;     //Error flag for the connection
     /**
      * [__construct Initializes a mysqli connection and stores the object in $omysqli]
      */
@@ -40,13 +41,13 @@ class omysqli {
             redirects::error(707, "Database connection information missing or invalid.");
             exit();
         } else {
-            if(empty(trim($dbOAuth["db"]))){
+            if(trim($dbOAuth["db"]) == false){
                 log::add(LOG::WARNING, "A database must be specified.");
                 $this->errorFlag = true;
                 redirects::error(707, "A database name must be specified.");
                 exit();
             }
-            $this->omysqli = new \mysqli($dbOAuth["host"], $dbOAuth["user"], $dbOAuth["pass"], $dbOAuth["db"]);
+            $this->omysqli = new mysqli($dbOAuth["host"], $dbOAuth["user"], $dbOAuth["pass"], $dbOAuth["db"]);
             if($this->omysqli->connect_errno){
                 $this->errorFlag = true;
                 redirects::error(707, $this->omysqli->error);

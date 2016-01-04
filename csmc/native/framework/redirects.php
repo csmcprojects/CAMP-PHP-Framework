@@ -79,7 +79,7 @@ class redirects{
 	 * @param  integer
 	 * @return [void]
 	 */
-	public static function home($message = "", $notification = "", $time = 1000){
+	public static function redirectHome($message = "", $notification = "", $time = 1000){
 		if(strpos($_SERVER['REQUEST_URI'], "?") != 0){
 			$str = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "?"));
 		} else {
@@ -102,7 +102,7 @@ class redirects{
 	 * @param  string  $notification [description]
 	 * @param  integer $time         [description]
 	 */
-	public static function link($link, $message = "", $notification = "", $time = 1){
+	public static function redirectLink($link, $message = "", $notification = "", $time = 1){
 		if(isset($_POST["ajax"])){
 			ios::out($message, $notification, "setTimeout(function(){window.location.href=\"".$link."\";}, ".$time.")");
 		} else {

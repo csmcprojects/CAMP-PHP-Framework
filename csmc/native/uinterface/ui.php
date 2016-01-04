@@ -44,7 +44,6 @@ class ui{
 				$fully_qualified_classname = "";
 				$method = "";
 			}
-
 			if($fully_qualified_classname != "" 								// If the fully qualified class name is not empty
 			&& ios::existsMethod($fully_qualified_classname, $method) 			// and the specified class and method exist
 																				// in the native or module namespace
@@ -53,6 +52,12 @@ class ui{
 			{
 				$objClass = new $fully_qualified_classname;
 				$_SESSION["csmc_native_uinterface_ui_startupcall"] = true;
+				if(isset($startup[2])){
+					log::add(log::DEBUG, "Loading startup parameters.");
+					foreach (explode("/", $startup[2]) as $key => $value) {
+						ios::setGetParams($value);
+					}
+				}
 				$page = misc::minifyHtml(html::htmlTemplate($objClass->$method()));
 				echo $page;
 				log::add(log::NOTICE, "HTML Template loaded.");
