@@ -18,7 +18,7 @@ use csmc\native\uinterface\ui as ui;
 /**
  * The input/output class that handles all the requests and responses.
  */
- 
+
 class ios{
 
     //Initializes the instance
@@ -31,12 +31,12 @@ class ios{
 		//Ajax request
 		if(isset($_POST["ajax"])){
 			log::add(log::NOTICE, "A new ajax request was made.");
-			//Set post parameters that are passed by an ajax call
+			//Sets to a session variable the get and post parameters that are passed ! by an AJAX call !
 			self::setPostAndGetParams();
 			//Checks if the model of the request is followed and all the necessary verifications to
 			//a successful request
 			if(trim($_POST["namespace"]) != false &&
-             trim($_POST["classname"]) != false && 
+             trim($_POST["classname"]) != false &&
              trim($_POST["method"]) != false ){
 				$method = $_POST["method"];
 				$fully_qualified_classname = self::existsClass($_POST["namespace"], $_POST["classname"]);
@@ -182,10 +182,10 @@ class ios{
 			return false;
 		}
 	}
-	
+
 	/**
-	 * ios::setPostAndGetParams() Sets in a session variable the GET and POST parameters. 
-	 * 
+	 * ios::setPostAndGetParams() Sets in a session variable the GET and POST parameters.
+	 *
 	 * @return void
 	 */
 	private static function setPostAndGetParams(){
@@ -197,7 +197,7 @@ class ios{
 					$_SESSION["post_params"] = json_decode($value, true);
 				}
 			} else {
-			  $_SESSION["post_params"] = json_decode($_POST["postParams"], true);			
+			  $_SESSION["post_params"] = json_decode($_POST["postParams"], true);
 			}
 		} else if(isset($_POST["getParams"])){
 			$_SESSION["post_params"] = array();
@@ -207,11 +207,11 @@ class ios{
 					$_SESSION["get_params"] = json_decode($value, true);
 				}
 			} else {
-			  $_SESSION["get_params"] = json_decode($_POST["getParams"], true);			
+			  $_SESSION["get_params"] = json_decode($_POST["getParams"], true);
 			}
 		}
 	}
-    
+
 	/**
 	 * ios::setGetParams() Sets in the get session variable a string of parameters values separated by /.
 	 * 
@@ -224,12 +224,12 @@ class ios{
 		}
         foreach(explode("/", $string) as $value){
             $_SESSION["get_params"][] = $string;
-        }		
+        }
 	}
-	
+
 	/**
 	 * ios::commands() A list of commands that can be executed in many situations.
-	 * 
+	 *
 	 * @return
 	 */
 	private static function commands(){
@@ -244,11 +244,9 @@ class ios{
 			if(defined("__DEV_ENVIRONMENT__")){
 				if(__DEV_ENVIRONMENT__ == 1){
 					log::show();
-					return true;
 				}
 			}
 		}
-		return false;
 	}
 }
 ?>
